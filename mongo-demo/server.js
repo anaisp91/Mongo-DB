@@ -6,6 +6,9 @@ dotenv.config()
 import express, { json } from 'express'
 import { connect } from 'mongoose'
 
+//importamos modulos
+const User = require("./models/UserModel")
+
 //crear app de express
 const app = express()
 
@@ -17,10 +20,28 @@ connect(process.env.MONGO_URI)
 .then(()=> console.log('Estas conectado a la BBDD'))
 .catch(err => console.err('Error al conectarse a la BBDD',err))
 
-//ruta basica de prueba
+//ruta basica de prueba a la Home
 app.get('/', (req, res) => {
     res.send('Servidor funcionando en MongoDB')
 })
+
+//ruta para crear un usuario (CRUD--->create)
+app.post('/createuser', async (req, res)=>{
+    try {
+        //crear instancia del modelo con los datos del body
+        const nuevoUsuario = new User(req.body)
+
+        //guardar en la base de datos el nuevo usuario
+        const usuarioGuardado = await nuevoUsuario.save()
+
+        //responder con el usuario guardado
+        res.status(201).json(usuarioGuardado)
+    } catch (err) {
+        //manejio de errores d ela peticion
+        res.status(400).json({error: err.message})
+    }
+})
+
 
 //arrancar servidor
 const PORT = process.env.PORT || 5000
