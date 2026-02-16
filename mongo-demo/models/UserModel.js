@@ -1,6 +1,5 @@
 import mongoose from "mongoose" 
 
-const mongoose = mongoose
 
 //definir el esquema(forma del documento)
 const userSchema = new mongoose.Schema({
@@ -9,4 +8,10 @@ const userSchema = new mongoose.Schema({
     edad: {type: Number}
 })
 
-module.exports = mongoose.model("User", userSchema)
+//module.exports = mongoose.model("User", userSchema)
+
+//creamos modelo
+const User = mongoose.model("User", userSchema)
+
+//exportamos ambos
+export {User, userSchema}

@@ -7,7 +7,7 @@ import express, { json } from 'express'
 import { connect } from 'mongoose'
 
 //importamos modulos
-const User = require("./models/UserModel")
+import {User, userSchema} from "./models/UserModel.js"
 
 //crear app de express
 const app = express()
@@ -20,9 +20,17 @@ connect(process.env.MONGO_URI)
 .then(()=> console.log('Estas conectado a la BBDD'))
 .catch(err => console.err('Error al conectarse a la BBDD',err))
 
+/*
 //ruta basica de prueba a la Home
 app.get('/', (req, res) => {
-    res.send('Servidor funcionando en MongoDB')
+    res.send('Hola esto es al home')
+})
+*/
+
+//ruta para traer todos los usuarios
+app.get('/', async (req, res) => {
+    const todosUsuarios = await User.find()
+    res.status(200).json(todosUsuarios)
 })
 
 //ruta para crear un usuario (CRUD--->create)
