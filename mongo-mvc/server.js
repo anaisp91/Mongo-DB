@@ -20,7 +20,7 @@ app.use(json())
 //conexion a MongoDB con Mongoose
 connect(process.env.MONGO_URI)
 .then(()=> console.log('Estas conectado a la BBDD'))
-.catch(err => console.err('Error al conectarse a la BBDD',err))
+.catch(err => console.error('Error al conectarse a la BBDD',err))
 
 /*
 //ruta basica de prueba a la Home

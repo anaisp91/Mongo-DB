@@ -4,11 +4,15 @@
 
 
 import express from 'express'
-export const router = express.Router()
+export const router = express.Router() 
 
 
 
 //importamos funciones
-import { getAllUsers } from "../controllers/userController.js";
+import { getAllUsers, 
+         getUserById,
+         createUser } from "../controllers/userController.js";
 
 router.get('/', getAllUsers)
+router.get('/:id', getUserById)
+router.post('/', createUser)
