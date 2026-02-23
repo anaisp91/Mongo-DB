@@ -43,5 +43,45 @@ export const createUser = async (req, res)=> {
 }
 
 //Actualizar un usuario - Update - PUT - /:id
+export const updateUser = async (req, res) => {
+    try {
+        const {id} = req.params
+        const updateUser = await User.findByIdAndUpdate(
+            id, 
+            req.body, 
+            {new: true, runValidator: true})
+
+        if(!updateUser){
+            return res.status(404).json({error: 'Usuario no encontrado'})
+        }
+
+        return res.status(200).json(updateUser)
+        
+    } catch (err) {
+        return res.status(400).json({error : 'ID no valido'})
+        
+    }
+
+}
 
 //Eliminar usuario - Delete - DELETE - /:id
+
+export const deleteUser = async (req,res) => {
+    try {
+        const {id} = req.params
+        const deleteUser = await User.findByIdAndDelete(id)
+
+        if(!deleteUser){
+            return res.status(404).json({error: "Usuario no enconrado"})
+        }
+
+        return res.status(204).json('Usuario eliminado correctamente') //204: No content 
+
+    } catch (err) {
+        return res.status(400).json({error: "ID no valido"})
+    }
+    
+    
+
+    
+}

@@ -11,8 +11,12 @@ export const router = express.Router()
 //importamos funciones
 import { getAllUsers, 
          getUserById,
-         createUser } from "../controllers/userController.js";
+         createUser,
+         updateUser,
+         deleteUser } from "../controllers/userController.js";
 
 router.get('/', getAllUsers)
 router.get('/:id', getUserById)
 router.post('/', createUser)
+router.put('/:id', updateUser)
+router.delete('/:id', deleteUser)
