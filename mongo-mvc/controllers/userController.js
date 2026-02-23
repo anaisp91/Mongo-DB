@@ -24,26 +24,27 @@ export const getUserById = async (req, res) => {
 
     } catch (err) {
         
-        return res.status(400).json({error: 'ID no valido'})
-        
+        //return res.status(400).json({error: 'ID no valido'})
+        next(err)
     }
    
 }
 
 //Crear un usuario - Create - POST - / 
-export const createUser = async (req, res)=> {
+export const createUser = async (req, res, next)=> {
     try {
         const newUser = new User(req.body)
         const saveUser = await newUser.save()
         res.status(201).json(saveUser) //201:Created
 
     } catch (err) {
-       res.status(400).json({error: err.message}) //400: Bad request
+       //res.status(400).json({error: err.message}) //400: Bad request
+       next(err)
     }
 }
 
 //Actualizar un usuario - Update - PUT - /:id
-export const updateUser = async (req, res) => {
+export const updateUser = async (req, res, next) => {
     try {
         const {id} = req.params
         const updateUser = await User.findByIdAndUpdate(
@@ -58,15 +59,15 @@ export const updateUser = async (req, res) => {
         return res.status(200).json(updateUser)
         
     } catch (err) {
-        return res.status(400).json({error : 'ID no valido'})
-        
+        //return res.status(400).json({error : 'ID no valido'})
+        next(err)
     }
 
 }
 
 //Eliminar usuario - Delete - DELETE - /:id
 
-export const deleteUser = async (req,res) => {
+export const deleteUser = async (req,res, next) => {
     try {
         const {id} = req.params
         const deleteUser = await User.findByIdAndDelete(id)
@@ -78,10 +79,10 @@ export const deleteUser = async (req,res) => {
         return res.status(204).json('Usuario eliminado correctamente') //204: No content 
 
     } catch (err) {
-        return res.status(400).json({error: "ID no valido"})
+        //return res.status(400).json({error: "ID no valido"})
+        
+        //Middleware de gestion de errores
+        next(err)
     }
-    
-    
-
     
 }

@@ -55,6 +55,13 @@ app.post('/createuser', async (req, res)=>{
 })
     */
 
+//Manejo de rutas no encotradas
+app.use((req, res) => res.status(404).json({error: 'Ruta no encontrada'}))
+
+//Middleware de errores
+import { errorGes } from './middlewares/errorGes.js'
+app.use(errorGes)
+
 
 //arrancar servidor
 const PORT = process.env.PORT || 5000
