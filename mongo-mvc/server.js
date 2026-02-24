@@ -5,6 +5,7 @@ dotenv.config()
 //importar dependencias
 import express, { json } from 'express'
 import { connect } from 'mongoose'
+import cors from 'cors'
 
 /*
 //importamos modelos
@@ -13,6 +14,16 @@ import {User, userSchema} from "./models/UserModel.js"
 
 //crear app de express
 const app = express()
+
+//CORS
+/*const corsOptions = {
+    origin: "http://localhost:3000", //solo permitimos este origen
+    methods: ["GET", "POST", "PUT", "DELETE"], //metodos permitidos
+    allowHeaders: ["Content-Type", "Authorization"] //cabeceras permitidas 
+}
+    */
+
+app.use(cors()). //app.use(cors(corsOptions)) si usaramos opciones
 
 //middleware para leer JSON cuando hagamos una peticion a la base de datos
 app.use(json())
