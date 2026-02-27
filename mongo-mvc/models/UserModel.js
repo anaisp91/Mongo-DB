@@ -7,7 +7,8 @@ import mongoose from "mongoose"
 const userSchema = new mongoose.Schema({
     nombre: {type: String, required: true}, //obligadorio
     email: {type: String, required: true, unique: true}, //obligatorio y unico
-    edad: {type: Number}
+    edad: {type: Number},
+    password: {type: String, required: true, minlenght: 6}
 }, { timestamps: true}); //fecha y hora de creacion y actualizacion
 
 //module.exports = mongoose.model("User", userSchema)
