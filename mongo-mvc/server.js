@@ -23,7 +23,7 @@ const app = express()
 }
     */
 
-app.use(cors()). //app.use(cors(corsOptions)) si usaramos opciones
+app.use(cors()) //app.use(cors(corsOptions)) si usaramos opciones
 
 //middleware para leer JSON cuando hagamos una peticion a la base de datos
 app.use(json())
@@ -45,6 +45,11 @@ import { router as userRoutes } from "./routes/userRoutes.js"
 app.use('/api/users', userRoutes) //definimos el endpoint de nuestra API
 
 //http://localhost/8080/api/users/...
+
+
+//Rutas de Auth
+import { router as authRoutes } from "./routes/authRoutes.js"
+app.use('/api/auth', authRoutes)
 
 
 /*
