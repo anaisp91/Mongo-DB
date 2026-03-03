@@ -1,15 +1,8 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { User } from '../models/UserModel.js'
+import { createToken } from '../utils/createToken.js'
 
-//creartoken
-const createToken = (userId) => {
-    return jwt.sign(
-        { id: userId },//id de usuario
-        process.env.JWT_SECRET,//secreto de jwt - env
-        { expiresIn: process.env.JWT_EXPIRES_IN }//tiempo de expiracion/validez
-    )
-}
 
 //registro
 export const register = async (req, res) => {
@@ -43,6 +36,67 @@ export const register = async (req, res) => {
             }, token
         })
 
+
+    } catch (err) {
+        return res.status(500).json({error: 'Error de servidor'})
+    }
+}
+
+//Login
+
+export const login = async (req, res) => {
+    try {
+        const { email, password } = req.body
+
+        //Validacion de los campos de entrada del login
+        if(!email | !password){
+            return res.status(400).json({error: 'Email y password son obligatorios'})
+        }
+
+        //Buscar usuario por email
+        const user = await User.findOne({email})
+
+        if(!user){
+            return res.status(400).json({error: 'Credenciales invalidas'})
+        }
+
+        //comparar contraseñas del usuario con las del req.body
+        const passwordOK = await bcrypt.compare(password, user.password)
+
+        if(!passwordOK){
+            return res.status(400).json({error: 'Credenciales invalidas'})
+        }
+
+        //Crear token
+        const token = createToken(user._id)
+
+        //Responder sin exponer la contraseña
+        return res.status(200).json({
+            user:{
+                id: user._id,
+                nombre: user.nombre,
+                email: user.email,
+                edad: user.edad
+            }, token
+        })
+        
+    } catch (err) {
+        return res.status(500).json({error: 'Error de servidor'})
+    }
+}
+
+
+//get profile
+export const getProfile = async (req, res) => {
+    try {
+        
+        const user = await User.findById(req.user.id).select('-password')
+
+        if(!user){
+            return res.status(404).json({error: 'Usuario no encontrado'})
+        }
+
+        return res.status(200).json(user)
 
     } catch (err) {
         return res.status(500).json({error: 'Error de servidor'})

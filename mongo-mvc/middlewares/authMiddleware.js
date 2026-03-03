@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 
 export const auth = (req, res, next) => {
     try {
-        const header = req.header.authorization || "";
+        const header = req.headers.authorization || "";
         const [type, token] = header.split(" ") //"Bearer token"
 
         //si no hay Bearer o no hay token
